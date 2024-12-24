@@ -38,14 +38,20 @@ namespace Application.Commands
             // Вывод координат выбранной точки
             ShowInfoWindow($"Координаты точки: X = {point.X}, Y = {point.Y}, Z = {point.Z}");
 
-            XYZ pt1 = point;
-            XYZ pt2 = new XYZ(point.X + 1, point.Y, point.Z);
+            // Определение центра и радиуса для арки
+            XYZ center = new XYZ(point.X + 5, point.Y, point.Z); // Можно изменять смещение по оси X
+            double radius = 5.0; // Радиус арки
 
-            // Определение уровня напрямую (например, "Level 1")
+            // Создание арки (четверти круга)
+            XYZ start = new XYZ(center.X - radius, center.Y, center.Z);
+            XYZ end = new XYZ(center.X + radius, center.Y, center.Z);
+            Arc arc = Arc.Create(start, end, new XYZ(center.X, center.Y + radius, center.Z));
+
+            // Определение уровня напрямую (например, "Уровень 1")
             Level level1 = new FilteredElementCollector(doc)
-                           .OfClass(typeof(Level))
-                           .Cast<Level>()
-                           .FirstOrDefault(level => level.Name.Equals("Уровень 1"));
+                .OfClass(typeof(Level))
+                .Cast<Level>()
+                .FirstOrDefault(level => level.Name.Equals("Уровень 1"));
 
             if (level1 == null)
             {
@@ -53,49 +59,20 @@ namespace Application.Commands
                 return Result.Failed;
             }
 
-            // Создаю объект в точек нажатия
-            using (Transaction transaction = new Transaction(doc, "Создание куба"))
+            // Создание объекта на основе арки
+            using (Transaction transaction = new Transaction(doc, "Создание загнутой стены"))
             {
                 doc_ = doc;
-
                 transaction.Start();
-
-                Line line = Line.CreateBound(pt1, pt2);
-                Wall.Create(doc, line, level1.Id, false);
-
+                Wall.Create(doc, arc, level1.Id, false);
                 transaction.Commit();
             }
 
-            // Вывод сообщения о создании куба
-            ShowInfoWindow("Куб успешно создан в выбранной точке!");
+            // Вывод сообщения о создании загнутой стены
+            ShowInfoWindow("Загнутая стена успешно создана в выбранной точке!");
 
             return Result.Succeeded;
         }
-
-
-        private Level Level1
-        {
-            get
-            {
-                // Возвращаем уровень для создания стен (например, первый уровень)
-                return new FilteredElementCollector(doc_)
-                       .OfClass(typeof(Level))
-                       .Cast<Level>()
-                       .FirstOrDefault(level => level.Name.Equals("Level 1"));
-            }
-        }
-        
-
-
-
-
-
-
-
-
-
-
-
 
 
 
