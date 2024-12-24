@@ -42,10 +42,15 @@ namespace Application.Commands
             XYZ center = new XYZ(point.X + 5, point.Y, point.Z); // Можно изменять смещение по оси X
             double radius = 5.0; // Радиус арки
 
-            // Создание арки (четверти круга)
-            XYZ start = new XYZ(center.X - radius, center.Y, center.Z);
-            XYZ end = new XYZ(center.X + radius, center.Y, center.Z);
-            Arc arc = Arc.Create(start, end, new XYZ(center.X, center.Y + radius, center.Z));
+            // Создание первой половины арки
+            XYZ start1 = new XYZ(center.X - radius, center.Y, center.Z);
+            XYZ end1 = new XYZ(center.X, center.Y + radius, center.Z);
+            Arc arc1 = Arc.Create(start1, end1, center);
+
+            // Создание второй половины арки
+            XYZ start2 = new XYZ(center.X, center.Y - radius, center.Z);
+            XYZ end2 = new XYZ(center.X + radius, center.Y, center.Z);
+            Arc arc2 = Arc.Create(start2, end2, center);
 
             // Определение уровня напрямую (например, "Уровень 1")
             Level level1 = new FilteredElementCollector(doc)
@@ -59,17 +64,18 @@ namespace Application.Commands
                 return Result.Failed;
             }
 
-            // Создание объекта на основе арки
+            // Создание объекта на основе двух дуг
             using (Transaction transaction = new Transaction(doc, "Создание загнутой стены"))
             {
                 doc_ = doc;
                 transaction.Start();
-                Wall.Create(doc, arc, level1.Id, false);
+                Wall.Create(doc, arc1, level1.Id, false);
+                Wall.Create(doc, arc2, level1.Id, false);
                 transaction.Commit();
             }
 
             // Вывод сообщения о создании загнутой стены
-            ShowInfoWindow("Загнутая стена успешно создана в выбранной точке!");
+            ShowInfoWindow("Замкнутая стена успешно создана в выбранной точке!");
 
             return Result.Succeeded;
         }
