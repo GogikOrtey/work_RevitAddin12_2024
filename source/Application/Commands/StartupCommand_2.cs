@@ -22,11 +22,18 @@ namespace Application.Commands
         {
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
-            Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
-            Element element = doc.GetElement(myRef);
-            ElementId id = element.Id;
 
-            ShowInfoWindow("id объекта = " + id.ToString());
+            //Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
+            //Element element = doc.GetElement(myRef);
+            //ElementId id = element.Id;
+
+            //ShowInfoWindow("id объекта = " + id.ToString());
+
+            // Выбор точки на поверхности (например, на полу)
+            XYZ point = uidoc.Selection.PickPoint("Выберите точку на поверхности");
+
+            // Вывод координат выбранной точки
+            ShowInfoWindow($"Координаты точки: X = {point.X}, Y = {point.Y}, Z = {point.Z}");
 
             return Result.Succeeded;
         }
@@ -59,8 +66,8 @@ namespace Application.Commands
             {
                 Title = "Information",
                 Content = dockPanel,
-                Width = 300,
-                Height = 200,
+                Width = 800,
+                Height = 250,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
 

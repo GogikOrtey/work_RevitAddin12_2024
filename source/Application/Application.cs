@@ -29,7 +29,6 @@ namespace Application
 
             panel.AddPushButton<StartupCommand_3>("Генерация круга из стен")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_new_2_32.png");
-
         }
     }
 }

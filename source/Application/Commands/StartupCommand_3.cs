@@ -18,7 +18,6 @@ namespace Application.Commands
     [Transaction(TransactionMode.Manual)]
     public class StartupCommand_3 : ExternalCommand
     {
-
         // Главный метод, который вызывается по нажатию на кнопку 
         public override void Execute()
         {
