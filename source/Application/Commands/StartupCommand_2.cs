@@ -25,7 +25,9 @@ namespace Application.Commands
             {
                 Title = "Information",
                 Content = stackPanel,
-                SizeToContent = SizeToContent.WidthAndHeight,
+                Width = 300,
+                Height = 200,
+                //SizeToContent = SizeToContent.WidthAndHeight,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
 
