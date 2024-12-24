@@ -6,6 +6,7 @@ using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.UI;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Application.Commands
 {
@@ -18,10 +19,10 @@ namespace Application.Commands
     {
         public override void Execute()
         {
-            var stackPanel = new StackPanel 
-            { 
-                HorizontalAlignment = HorizontalAlignment.Center, 
-                VerticalAlignment = VerticalAlignment.Center 
+            var stackPanel = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Background = Brushes.Red // Заливаем элемент красным цветом
             };
 
             // Создаем окно и добавляем в него стековую панель
@@ -31,7 +32,6 @@ namespace Application.Commands
                 Content = stackPanel,
                 Width = 300,
                 Height = 200,
-                //SizeToContent = SizeToContent.WidthAndHeight,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen
             };
 
@@ -41,7 +41,7 @@ namespace Application.Commands
                 Text = "Hello world",
                 TextAlignment = TextAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Bottom,
+                VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(20)
             };
 
@@ -50,13 +50,22 @@ namespace Application.Commands
             {
                 Content = "Ok",
                 Width = 75,
-                Margin = new Thickness(10)
+                Margin = new Thickness(0, 0, 0, 10),
+                VerticalAlignment = VerticalAlignment.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center
             };
             okButton.Click += (sender, args) => messageBox.Close();
 
-            // Создаем стековую панель и добавляем в нее текстовый блок и кнопку            
+            // Создаем StackPanel для кнопки и размещаем её внизу
+            var buttonPanel = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+            buttonPanel.Children.Add(okButton);
+
+            // Добавляем текстовый блок и панель с кнопкой в стековую панель
             stackPanel.Children.Add(textBlock);
-            stackPanel.Children.Add(okButton);
+            stackPanel.Children.Add(buttonPanel);
 
             // Показываем окно
             messageBox.ShowDialog();
