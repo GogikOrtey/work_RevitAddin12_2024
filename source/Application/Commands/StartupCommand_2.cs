@@ -12,20 +12,17 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace Application.Commands
 {
-    /// <summary>
-    ///     External command entry point invoked from the Revit interface
-    /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
     public class StartupCommand_2 : IExternalCommand
     {
-        private Document doc_;
-
+        // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
 
+            // Старый код - для вывода id выбранного элемента
             //Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
             //Element element = doc.GetElement(myRef);
             //ElementId id = element.Id;
@@ -41,22 +38,16 @@ namespace Application.Commands
             double radius = 5.0; // Радиус окружности
 
             // Создание окружности из арок
-            Arc arc1 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),
-                                  new XYZ(center.X + radius, center.Y, center.Z), 
-                                  new XYZ(center.X, center.Y + radius, center.Z));
-
-            Arc arc2 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),
+            // 1я арка
+            Arc arc1 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // С левого края, по х
+                                  new XYZ(center.X + radius, center.Y, center.Z),   // До правого края, по х
+                                  new XYZ(center.X, center.Y + radius, center.Z));  // Через верх по у
+            // 2я арка
+            Arc arc2 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // То же самое
                                   new XYZ(center.X + radius, center.Y, center.Z),
-                                  new XYZ(center.X, center.Y - radius, center.Z));
+                                  new XYZ(center.X, center.Y - radius, center.Z));  // Через низ по у
 
-            //Arc arc2 = Arc.Create(new XYZ(center.X, center.Y + radius, center.Z),
-            //                      new XYZ(center.X + radius, center.Y, center.Z), center);
-            //Arc arc3 = Arc.Create(new XYZ(center.X + radius, center.Y, center.Z),
-            //                      new XYZ(center.X, center.Y - radius, center.Z), center);
-            //Arc arc4 = Arc.Create(new XYZ(center.X, center.Y - radius, center.Z),
-            //                      new XYZ(center.X - radius, center.Y, center.Z), center);
-
-            // Определение уровня напрямую
+            // Выбор уровня
             Level level1 = new FilteredElementCollector(doc)
                 .OfClass(typeof(Level))
                 .Cast<Level>()
@@ -71,12 +62,11 @@ namespace Application.Commands
             // Создание объекта на основе окружности
             using (Transaction transaction = new Transaction(doc, "Создание окружной стены"))
             {
-                doc_ = doc;
                 transaction.Start();
+
                 Wall.Create(doc, arc1, level1.Id, false);
                 Wall.Create(doc, arc2, level1.Id, false);
-                //Wall.Create(doc, arc3, level1.Id, false);
-                //Wall.Create(doc, arc4, level1.Id, false);
+
                 transaction.Commit();
             }
 
@@ -84,23 +74,6 @@ namespace Application.Commands
             ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
 
             return Result.Succeeded;
-        }
-
-
-
-        //// Главный метод, который вызывается по нажатию на кнопку 
-        //public override void Execute(UIApplication uiApp)
-        //{
-
-
-        //    //SelectedElementAndGetInfo();
-        //    ShowInfoWindow("Hello world!");
-        //}
-
-        // Метод, в котором прописано выделение объекта, получение данных о них, и вывод их
-        void SelectedElementAndGetInfo()
-        {
-
         }
 
         // Выводит окно с информацией
