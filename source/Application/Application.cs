@@ -18,9 +18,10 @@ namespace Application
         {
             var panel = Application.CreatePanel("Commands", "Application");
 
-            panel.AddPushButton<StartupCommand>("Кнопка 3")
-                .SetLargeImage("/Application;component/Resources/Icons/ico_new_1_32.png");
+            panel.AddPushButton<StartupCommand>("Тестовая кнопка")
+                //.SetLargeImage("/Application;component/Resources/Icons/ico_new_1_32.png");
                 //.SetLargeImage("/Application;component/Resources/Icons/ico_new_2_32.png");
+                .SetLargeImage("/Application;component/Resources/Icons/ico_test_2.png");
         }
     }
 }
