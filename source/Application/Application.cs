@@ -16,7 +16,7 @@ namespace Application
 
         private void CreateRibbon()
         {
-            var panel = Application.CreatePanel("Commands", "RevitAddIn12");
+            var panel = Application.CreatePanel("Commands", "Altek Orlov");
 
             panel.AddPushButton<StartupCommand>("Тестовая кнопка")
                 //.SetLargeImage("/Application;component/Resources/Icons/ico_new_1_32.png");

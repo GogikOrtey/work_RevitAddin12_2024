@@ -18,7 +18,11 @@ namespace Application.Commands
     {
         public override void Execute()
         {
-            var stackPanel = new StackPanel();
+            var stackPanel = new StackPanel 
+            { 
+                HorizontalAlignment = HorizontalAlignment.Center, 
+                VerticalAlignment = VerticalAlignment.Center 
+            };
 
             // Создаем окно и добавляем в него стековую панель
             var messageBox = new Window
@@ -36,7 +40,8 @@ namespace Application.Commands
             {
                 Text = "Hello world",
                 TextAlignment = TextAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20)
             };
 
