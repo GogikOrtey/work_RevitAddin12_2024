@@ -17,11 +17,24 @@ namespace Application.Commands
     [Transaction(TransactionMode.Manual)]
     public class StartupCommand_2 : ExternalCommand
     {
+        // Главный метод, который вызывается по нажатию на кнопку 
         public override void Execute()
+        {
+            ShowInfoWindow("Hello world 2");
+        }
+
+        // Метод, в котором прописано выделение объекта, получение данных о них, и вывод их
+        void SelectedElementAndGetInfo()
+        {
+
+        }
+
+        // Выводит окно с информацией
+        public void ShowInfoWindow(string inpText)
         {
             var dockPanel = new DockPanel
             {
-                //Background = Brushes.Red // Заливаем элемент красным цветом
+
             };
 
             // Создаем окно и добавляем в него DockPanel
@@ -37,8 +50,8 @@ namespace Application.Commands
             // Создаем текстовый блок
             var textBlock = new TextBlock
             {
-                Text = "Hello world",
-                
+                Text = inpText,
+
                 TextAlignment = TextAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
