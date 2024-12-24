@@ -7,6 +7,7 @@ using Autodesk.Revit.UI;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using Autodesk.Revit.DB;
 
 namespace Application.Commands
 {
@@ -15,13 +16,29 @@ namespace Application.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
-    public class StartupCommand_2 : ExternalCommand
+    public class StartupCommand_2 : IExternalCommand
     {
-        // Главный метод, который вызывается по нажатию на кнопку 
-        public override void Execute()
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            ShowInfoWindow("Hello world 2");
+            UIDocument uidoc = commandData.Application.ActiveUIDocument;
+            Document doc = uidoc.Document;
+            Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
+            Element element = doc.GetElement(myRef);
+            ElementId id = element.Id;
+
+            ShowInfoWindow("id объекта = " + id.ToString());
+
+            return Result.Succeeded;
         }
+
+        //// Главный метод, который вызывается по нажатию на кнопку 
+        //public override void Execute(UIApplication uiApp)
+        //{
+
+
+        //    //SelectedElementAndGetInfo();
+        //    ShowInfoWindow("Hello world!");
+        //}
 
         // Метод, в котором прописано выделение объекта, получение данных о них, и вывод их
         void SelectedElementAndGetInfo()
