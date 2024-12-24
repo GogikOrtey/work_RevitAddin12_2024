@@ -14,7 +14,7 @@
     Width="800">
     <Grid>
         <TextBlock
-            Text="Module_1"
+            Text="Тестовое окно"
             FontSize="60"
             VerticalAlignment="Center"
             HorizontalAlignment="Center" />
