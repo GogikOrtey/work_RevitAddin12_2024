@@ -14,6 +14,8 @@ namespace Application.Commands
 {
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
+
+    // Этот модуль выводит 2 сообщения, о координатах точки, куда нажал пользователь мышкой
     public class StartupCommand_4 : IExternalCommand
     {
         // Код, который выполняется по нажатию кнопки №2

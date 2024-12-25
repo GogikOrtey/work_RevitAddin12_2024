@@ -14,6 +14,8 @@ namespace Application.Commands
 {
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
+
+    // Этот модуль создаёт окружную стену, в точке нажатия пользователем
     public class StartupCommand_2 : IExternalCommand
     {
         // Код, который выполняется по нажатию кнопки №2

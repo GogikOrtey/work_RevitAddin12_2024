@@ -16,6 +16,8 @@ namespace Application.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
+
+    // Этот модуль выводит информацию об объекте по нажатию на него мышкой
     public class StartupCommand_3 : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)

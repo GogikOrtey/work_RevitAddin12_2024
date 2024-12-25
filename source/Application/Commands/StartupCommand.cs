@@ -12,6 +12,8 @@ namespace Application.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
+
+    // Этот модуль выводит стандартное визуальное окно 
     public class StartupCommand : ExternalCommand
     {
         public override void Execute()
