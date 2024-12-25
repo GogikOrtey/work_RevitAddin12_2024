@@ -16,72 +16,21 @@ namespace Application.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
-    public class StartupCommand_3 : ExternalCommand
+    public class StartupCommand_3 : IExternalCommand
     {
-        // Главный метод, который вызывается по нажатию на кнопку 
-        public override void Execute()
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            UIDocument uidoc = commandData.Application.ActiveUIDocument;
+            Document doc = uidoc.Document;
 
+            // Вывод id выбранного элемента
+            Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
+            Element element = doc.GetElement(myRef);
+            ElementId id = element.Id;
 
-            //SelectedElementAndGetInfo();
-            ShowInfoWindow("Hello world!");
-        }
+            OthersMyVoid.ShowInfoWindow("id элемента = " + id);
 
-        // Метод, в котором прописано выделение объекта, получение данных о них, и вывод их
-        void SelectedElementAndGetInfo()
-        {
-
-        }
-
-        // Выводит окно с информацией
-        public void ShowInfoWindow(string inpText)
-        {
-            var dockPanel = new DockPanel
-            {
-
-            };
-
-            // Создаем окно и добавляем в него DockPanel
-            var messageBox = new Window
-            {
-                Title = "Information",
-                Content = dockPanel,
-                Width = 300,
-                Height = 200,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-
-            // Создаем текстовый блок
-            var textBlock = new TextBlock
-            {
-                Text = inpText,
-
-                TextAlignment = TextAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Margin = new Thickness(20),
-                FontSize = 14
-            };
-
-            // Создаем кнопку "Ок"
-            var okButton = new Button
-            {
-                Content = "Ok",
-                Width = 75,
-                Margin = new Thickness(0, 0, 0, 10),
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-            okButton.Click += (sender, args) => messageBox.Close();
-
-            // Добавляем кнопку внизу с помощью DockPanel
-            DockPanel.SetDock(okButton, Dock.Bottom);
-            dockPanel.Children.Add(okButton);
-
-            // Добавляем текстовый блок в центр с помощью DockPanel
-            dockPanel.Children.Add(textBlock);
-
-            // Показываем окно
-            messageBox.ShowDialog();
+            return Result.Succeeded;
         }
     }
 }
