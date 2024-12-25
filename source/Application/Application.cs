@@ -27,8 +27,11 @@ namespace Application
             panel.AddPushButton<StartupCommand_3>("Вывод информации о выбранном объекте")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_new_1_32.png");
 
-            panel.AddPushButton<StartupCommand_2>("Генерация круга из стен")
+            panel.AddPushButton<StartupCommand_4>("Вывод координат нажатия мышки")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_new_2_32.png");
+
+            panel.AddPushButton<StartupCommand_2>("Генерация круга из стен")
+                .SetLargeImage("/Application;component/Resources/Icons/ico_new_3_32.png");
         }
     }
 }

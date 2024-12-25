@@ -22,20 +22,8 @@ namespace Application.Commands
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
 
-            // Старый код - для вывода id выбранного элемента
-            //Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
-            //Element element = doc.GetElement(myRef);
-            //ElementId id = element.Id;
-
             // Выбор точки на поверхности
             XYZ point = uidoc.Selection.PickPoint("Выберите точку на поверхности");
-
-            // Вывод координат выбранной точки, с использованием самописного метода
-            OthersMyVoid.ShowInfoWindow($"Координаты точки: X = {point.X}, Y = {point.Y}, Z = {point.Z}");
-            // Мой самописный метод я поместил в файл "OthersMyVoid.cs", в проекте Application
-
-            // Создание и вывод диалогового окна, с использованием встроенного метода
-            TaskDialog.Show("Информация", $"Координаты точки: X = {point.X}, Y = {point.Y}, Z = {point.Z}");
 
             // Определение центра и радиуса для окружности
             XYZ center = new XYZ(point.X + 5, point.Y, point.Z); // Можно изменять смещение по оси X
