@@ -19,7 +19,7 @@
             VerticalAlignment="Top"
             HorizontalAlignment="Stretch" Margin="0,15,0,0" TextAlignment="Center" />
         <Label Content="Введите радиус:" HorizontalAlignment="Left" Height="33" Margin="79,96,0,0" VerticalAlignment="Top" Width="137" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True"/>
-        <TextBox HorizontalAlignment="Left" Margin="236,96,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="80" Height="33" FontSize="14" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="TB_inputRadius" HorizontalAlignment="Left" Margin="236,96,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Width="80" Height="33" FontSize="14" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <TextBlock Text="Выберете материал стены:" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" VerticalAlignment="Top" Width="237" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap"/>
         <ComboBox HorizontalAlignment="Left" Margin="79,198,0,0" VerticalAlignment="Top" Width="237" Height="41"/>
         <Button Content="Создать стену" HorizontalAlignment="Right" Margin="0,0,40,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_AcceptGenerateWall" Background="#FF2BE41C"/>
