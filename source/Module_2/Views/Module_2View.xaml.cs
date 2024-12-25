@@ -36,8 +36,23 @@ namespace Module_2.Views
             else
             {
                 // Значение является числом, можете использовать переменную radius
+                //TaskDialog.Show("Info", "Значение корректно, и = " + radius);
 
-                TaskDialog.Show("Info", "Значение корректно, и = " + radius);
+                if (radius <= 0)
+                {
+                    // Радиус некорректнен
+                    MessageBox.Show("Радиус должен быть больше 0", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else if (radius > 10)
+                {
+                    // Радиус некорректнен
+                    MessageBox.Show("Радиус должен быть меньше 10", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    // Радиус корректен
+                    TaskDialog.Show("Info", "Радиус корректен: " + radius);
+                }
             }
 
 
