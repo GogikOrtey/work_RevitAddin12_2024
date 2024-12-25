@@ -44,6 +44,8 @@
     <ItemGroup>
       <None Remove="Resources\Icons\ico_new_1_32.png" />
       <None Remove="Resources\Icons\ico_new_2_32.png" />
+      <None Remove="Resources\Icons\ico_new_3_32.png" />
+      <None Remove="Resources\Icons\ico_test_2.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,6 +58,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Module_1\Module_1.csproj" />
+      <ProjectReference Include="..\Module_2\Module_2.csproj" />
+      <ProjectReference Include="..\Module_3\Module_3.csproj" />
+      <ProjectReference Include="..\Module_4\Module_4.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -63,6 +68,12 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
         <Resource Include="Resources\Icons\ico_new_2_32.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Resources\Icons\ico_new_3_32.png">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Resource>
+        <Resource Include="Resources\Icons\ico_test_2.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Resource>
         <Resource Include="Resources\Icons\RibbonIcon16.png">

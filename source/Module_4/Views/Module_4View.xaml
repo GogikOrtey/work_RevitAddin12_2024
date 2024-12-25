@@ -1,20 +1,20 @@
 ﻿<Window
-    x:Class="Module_1.Views.Module_1View"
+    x:Class="Module_4.Views.Module_4View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:viewModel="clr-namespace:Module_1.ViewModels"
+    xmlns:viewModel="clr-namespace:Module_4.ViewModels"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance viewModel:Module_1ViewModel}"
+    d:DataContext="{d:DesignInstance viewModel:Module_4ViewModel}"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
-    Title="Module_1"
+    Title="Module_4"
     Height="450"
     Width="800">
     <Grid>
         <TextBlock
-            Text="Тестовое окно"
+            Text="Module_4"
             FontSize="60"
             VerticalAlignment="Center"
             HorizontalAlignment="Center" />

@@ -2,6 +2,8 @@
 using Nice3point.Revit.Toolkit.External;
 using Module_1.ViewModels;
 using Module_1.Views;
+using Module_2.ViewModels;
+using Module_2.Views;
 
 namespace Application.Commands
 {
@@ -10,6 +12,8 @@ namespace Application.Commands
     /// </summary>
     [UsedImplicitly]
     [Transaction(TransactionMode.Manual)]
+
+    // Этот модуль выводит стандартное визуальное окно 
     public class StartupCommand : ExternalCommand
     {
         public override void Execute()

@@ -1,6 +1,6 @@
 ﻿<RevitAddIns>
     <AddIn Type="Application">
-        <Name>Application</Name>
+        <Name>Application12</Name>
         <Assembly>Application/Application.dll</Assembly>
         <AddInId>B416D408-8775-4B5C-9820-4FCAA1A5D4E1</AddInId>
         <FullClassName>Application.Application</FullClassName>
