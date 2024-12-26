@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace Module_2.ViewModels
 {
-    public sealed class Module_2ViewModel : ObservableObject
+    public sealed partial class Module_2ViewModel : ObservableObject
     {
         // Значение радиуса, которое вводит пользователь
 
@@ -24,6 +25,26 @@ namespace Module_2.ViewModels
 
         // Список, который можно изменять из Model:
 
+        //[ObservableProperty]
+        //private List<string>? wallTypeNames;
+
+        //public Module_2ViewModel()
+        //{
+        //    WallTypeNames = null;
+        //}
+
+        //[ObservableProperty]
+        //private string? wTN_2;
+
+        
+
+
+
+
+        //
+        // Список, который можно изменять из Model:
+        //
+
         private List<string> _wallTypeNames;
         public List<string> WallTypeNames
         {
@@ -35,11 +56,20 @@ namespace Module_2.ViewModels
             }
         }
 
+        // Создаю новый список, при инициализации
         public Module_2ViewModel()
         {
             WallTypeNames = new List<string>();
         }
 
+        // Отдельный метод для добавления значений в список
+        public void AddWallTypeName(string name)
+        {
+            WallTypeNames.Add(name);
+            OnPropertyChanged("WallTypeNames");
+        }
+
+        // Событие, которое я вызываю, при изменени значения переменной
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {

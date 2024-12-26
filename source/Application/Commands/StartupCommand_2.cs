@@ -30,17 +30,38 @@ namespace Application.Commands
             // Выбор точки на поверхности
             XYZ point = uidoc.Selection.PickPoint("Выберите точку на поверхности");
 
-            // Инициализирую окно
+            // Инициализируем окно и ViewModel
             var viewModel = new Module_2ViewModel();
             var view = new Module_2View(viewModel);
 
-            // Добавляю в список все типы стен
-            //GetAllWallTypes(doc);
-            viewModel.WallTypeNames.Add("111");
-            viewModel.WallTypeNames.Add("222");
+            // Показываем окно и вносим изменения в ViewModel после инициализации окна
+            viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
+            viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
 
-            // Показываю окно
+            // Показываем окно
             view.ShowDialog();
+
+
+            //// Инициализирую окно
+            //var viewModel = new Module_2ViewModel();
+            //var view = new Module_2View(viewModel);
+
+            //// Добавляю в список все типы стен
+            ////GetAllWallTypes(doc);
+            ////viewModel.WallTypeNames.Add("111");
+            ////viewModel.WallTypeNames.Add("222");
+
+            ////viewModel.AddWallTypeName("789");
+            ////viewModel.WallTypeNames = new List<string> { "333", "444" };
+
+            //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
+            //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
+
+            //// Показываю окно
+            //view.ShowDialog();
+
+            viewModel.AddWallTypeName("5 Задаю значение в коде Model через AddWallTypeName");
+            viewModel.WallTypeNames.Add("6 Задаю значение в коде Model через метод .Add");
 
             TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect);
 
