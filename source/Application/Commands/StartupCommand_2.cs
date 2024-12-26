@@ -21,6 +21,7 @@ namespace Application.Commands
         // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            UIApplication uiApp = commandData.Application;
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
 

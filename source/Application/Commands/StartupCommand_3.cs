@@ -22,17 +22,82 @@ namespace Application.Commands
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            UIDocument uidoc = commandData.Application.ActiveUIDocument;
-            Document doc = uidoc.Document;
+            UIApplication uiApp = commandData.Application;
+            UIDocument uiDoc = uiApp.ActiveUIDocument;
+            Document doc = uiDoc.Document;
 
-            // Вывод id выбранного элемента
-            Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
-            Element element = doc.GetElement(myRef);
-            ElementId id = element.Id;
+            //// Вывод id выбранного элемента
+            //Reference myRef = uiDoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
+            //Element element = doc.GetElement(myRef);
+            //ElementId id = element.Id;
 
-            OthersMyVoid.ShowInfoWindow("id элемента = " + id);
+            try
+            {
+                // Выбор элемента (стены)
+                Reference pickedObj = uiDoc.Selection.PickObject(ObjectType.Element, "Выберите стену");
+                Element elem = doc.GetElement(pickedObj);
+
+                // Проверка, что выбранный элемент является стеной
+                if (elem is Wall wall)
+                {
+                    // Получение Id выбранного элемента
+                    TaskDialog.Show("Element Id", "Id элемента: " + wall.Id);
+
+                    // Получение всех типов стен в документе
+                    FilteredElementCollector collector = new FilteredElementCollector(doc);
+                    ICollection<Element> wallTypes = collector.OfClass(typeof(WallType)).ToElements();
+
+                    List<string> wallTypeNames = new List<string>();
+
+                    foreach (Element wallTypeElem in wallTypes)
+                    {
+                        WallType wallType = wallTypeElem as WallType;
+                        if (wallType != null)
+                        {
+                            wallTypeNames.Add(wallType.Name);
+                        }
+                    }
+
+                    string wallTypeNamesString = string.Join(", ", wallTypeNames);
+                    TaskDialog.Show("Wall Types", "Доступные материалы стен: " + wallTypeNamesString);
+                }
+                else
+                {
+                    TaskDialog.Show("Error", "Выбранный элемент не является стеной.");
+                }
+
+                return Result.Succeeded;
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            {
+                // Обработка отмены выбора пользователем
+                return Result.Cancelled;
+            }
+            catch (System.Exception ex)
+            {
+                message = ex.Message;
+                return Result.Failed;
+            }
+
+
+            //OthersMyVoid.ShowInfoWindow("id элемента = " + id);
 
             return Result.Succeeded;
         }
+
+        //public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
+        //{
+        //    UIDocument uidoc = commandData.Application.ActiveUIDocument;
+        //    Document doc = uidoc.Document;
+
+        //    // Вывод id выбранного элемента
+        //    Reference myRef = uidoc.Selection.PickObject(ObjectType.Element, "Выберите элемент для вывода его Id");
+        //    Element element = doc.GetElement(myRef);
+        //    ElementId id = element.Id;
+
+        //    OthersMyVoid.ShowInfoWindow("id элемента = " + id);
+
+        //    return Result.Succeeded;
+        //}
     }
 }
