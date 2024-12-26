@@ -21,9 +21,18 @@ namespace Module_2.Views
         {
             DataContext = viewModel;
             InitializeComponent();
-            TB_inputRadius.Text = "5"; // Устанавливаю начальное значение для поля ввода радиуса
+            TB_inputRadius.Text = "5";                  // Устанавливаю начальное значение для поля ввода радиуса
+            AddElementForComboBoxSelectWallMaterial();  // Добавляю значения в список выбора материала для стен
 
             SetValueFor_IsWindowCorrectCloset(false); // По умолчанию устанавливаю false, и устанавливаю true только при корректном закрытии
+        }
+
+        // Здесь добавляются значения в список выбора материала для стен
+        void AddElementForComboBoxSelectWallMaterial()
+        {
+            ComboBoxForSelectWallMaterial.Items.Add("1");
+            ComboBoxForSelectWallMaterial.Items.Add("2");
+            ComboBoxForSelectWallMaterial.Items.Add("3");
         }
 
         // Красная кнопка снизу "Отменить"
@@ -73,6 +82,26 @@ namespace Module_2.Views
             }
         }
 
+
+
+        /*
+        
+                // Получение всех типов стен в документе
+                FilteredElementCollector collector = new FilteredElementCollector(doc);
+                ICollection<Element> wallTypes = collector.OfClass(typeof(WallType)).ToElements();
+
+                List<string> wallTypeNames = new List<string>();
+
+                foreach (Element wallTypeElem in wallTypes)
+                {
+                    WallType wallType = wallTypeElem as WallType;
+                    if (wallType != null)
+                    {
+                        wallTypeNames.Add(wallType.Name);
+                    }
+                }
+
+        */
 
         // Кнопка подтверждения генерации стен
         // Зелёная кнопка снизу "Создать стену"
