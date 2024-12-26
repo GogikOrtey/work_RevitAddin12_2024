@@ -32,62 +32,77 @@ namespace Application.Commands
             var view = new Module_2View(viewModel);
             view.ShowDialog();
 
-            TaskDialog.Show("Info", "Окно завершено корректно, радиус = " + viewModel.InputRadius + ", viewModel.IsWindowClosetCorrect = " + viewModel.IsWindowClosetCorrect);
+            TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect);
 
+            // Если окно ввода информации для создания стены закрыто корректно
+            if (viewModel.IsWindowClosetCorrect)
+            {
+                int InpRadius = Module_2View.ExRadius;
 
-            //int InpRadius = Module_2View.ExRadius;
+                //TaskDialog.Show("Info", "_1_InpRadius = " + InpRadius);
+                //double radius = 5.0; // Радиус окружности
 
-            //TaskDialog.Show("Info", "_1_InpRadius = " + InpRadius);
+                double radius;
+                double.TryParse(viewModel.InputRadius, out radius);
 
-            //double radius = 5.0; // Радиус окружности
+                // Перевод из метров во внутренние единицы (футы)
+                radius = ConvertMetersToFoot(radius);
 
-            //double radius = InpRadius;
+                // Определение центра и радиуса для окружности
+                XYZ center = new XYZ(point.X + ConvertMetersToFoot(5), point.Y, point.Z); // Можно изменять смещение по оси X            
 
-            //// Определение центра и радиуса для окружности
-            //XYZ center = new XYZ(point.X + 5, point.Y, point.Z); // Можно изменять смещение по оси X            
+                // Создание окружности из арок
+                // 1я арка
+                Arc arc1 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // С левого края, по х
+                                      new XYZ(center.X + radius, center.Y, center.Z),   // До правого края, по х
+                                      new XYZ(center.X, center.Y + radius, center.Z));  // Через верх по у
+                // 2я арка
+                Arc arc2 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // То же самое
+                                      new XYZ(center.X + radius, center.Y, center.Z),
+                                      new XYZ(center.X, center.Y - radius, center.Z));  // Через низ по у
 
-            //// Создание окружности из арок
-            //// 1я арка
-            //Arc arc1 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // С левого края, по х
-            //                      new XYZ(center.X + radius, center.Y, center.Z),   // До правого края, по х
-            //                      new XYZ(center.X, center.Y + radius, center.Z));  // Через верх по у
-            //// 2я арка
-            //Arc arc2 = Arc.Create(new XYZ(center.X - radius, center.Y, center.Z),   // То же самое
-            //                      new XYZ(center.X + radius, center.Y, center.Z),
-            //                      new XYZ(center.X, center.Y - radius, center.Z));  // Через низ по у
+                // Выбор уровня
+                Level level1 = new FilteredElementCollector(doc)
+                    .OfClass(typeof(Level))
+                    .Cast<Level>()
+                    .FirstOrDefault(level => level.Name.Equals("Уровень 1"));
 
-            //// Выбор уровня
-            //Level level1 = new FilteredElementCollector(doc)
-            //    .OfClass(typeof(Level))
-            //    .Cast<Level>()
-            //    .FirstOrDefault(level => level.Name.Equals("Уровень 1"));
+                // "Уровень" - это понятие из Revit, которе можно обозначить как "Этаж", на котором мы работаем, и создаём объекты
 
-            //// "Уровень" - это понятие из Revit, которе можно обозначить как "Этаж", на котором мы работаем, и создаём объекты
+                if (level1 == null)
+                {
+                    message = "Уровень 'Уровень 1' не найден.";
+                    return Result.Failed;
 
-            //if (level1 == null)
-            //{
-            //    message = "Уровень 'Уровень 1' не найден.";
-            //    return Result.Failed;
+                    // Если мы используем return Result.Failed;, то Revit не выбросит исключение, которое закроет его без сохранения проекта, 
+                    // Он просто покажет встроенноное окно с ошибкой, и программа не закроется, что удобно
+                }
 
-            //    // Если мы используем return Result.Failed;, то Revit не выбросит исключение, которое закроет его без сохранения проекта, 
-            //    // Он просто покажет встроенноное окно с ошибкой, и программа не закроется, что удобно
-            //}
+                // Создание объекта на основе окружности
+                using (Transaction transaction = new Transaction(doc, "Создание окружной стены"))
+                {
+                    transaction.Start();
 
-            //// Создание объекта на основе окружности
-            //using (Transaction transaction = new Transaction(doc, "Создание окружной стены"))
-            //{
-            //    transaction.Start();
+                    Wall.Create(doc, arc1, level1.Id, false);
+                    Wall.Create(doc, arc2, level1.Id, false);
 
-            //    Wall.Create(doc, arc1, level1.Id, false);
-            //    Wall.Create(doc, arc2, level1.Id, false);
+                    transaction.Commit();
+                }
 
-            //    transaction.Commit();
-            //}
-
-            //// Вывод сообщения о создании окружной стены
-            //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
+                // Вывод сообщения о создании окружной стены
+                //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
+            }
 
             return Result.Succeeded;
+        }
+
+        // Переводит числовое значение из метров в футы
+        public double ConvertMetersToFoot(double inputVal)
+        {
+            inputVal = inputVal / 3.048f;
+            inputVal = Math.Round(inputVal, 2);
+
+            return (inputVal);
         }
     }
 }

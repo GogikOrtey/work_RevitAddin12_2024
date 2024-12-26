@@ -23,9 +23,10 @@ namespace Module_2.Views
             InitializeComponent();
             TB_inputRadius.Text = "5"; // Устанавливаю начальное значение для поля ввода радиуса
 
-            SetValueFor_IsWindowCorrectCloset(true); // Тестово устанавливаю значение false, для общей переменной
+            SetValueFor_IsWindowCorrectCloset(false); // По умолчанию устанавливаю false, и устанавливаю true только при корректном закрытии
         }
 
+        // Красная кнопка снизу "Отменить"
         private void Button_Click_CloseThisWindow(object sender, System.Windows.RoutedEventArgs e)
         {
             // Закрытие окна
@@ -74,6 +75,7 @@ namespace Module_2.Views
 
 
         // Кнопка подтверждения генерации стен
+        // Зелёная кнопка снизу "Создать стену"
         private void Button_Click_AcceptGenerateWall(object sender, System.Windows.RoutedEventArgs e)
         {
 
@@ -100,29 +102,34 @@ namespace Module_2.Views
 
                 //TaskDialog.Show("Info", "Значение корректно, и = " + radius);
 
-                if (radius <= 0)
+                if (radius < 1)
                 {
                     // Радиус некорректнен
-                    MessageBox.Show("Радиус должен быть больше 0", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Радиус должен быть больше 1 метра", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-                else if (radius > 10)
+                else if (radius > 20)
                 {
                     // Радиус некорректнен
-                    MessageBox.Show("Радиус должен быть меньше 10", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Радиус должен быть меньше 20 метров", "Ошибка ввода: Радиус некорректнен!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
                     // Радиус корректен
-                    TaskDialog.Show("Info", "Радиус корректен: " + radius);
-                    
+                    //TaskDialog.Show("Info", "Радиус корректен: " + radius);
+
+                    SetValueFor_IsWindowCorrectCloset(true);
                     this.Close();   // Закрываем это окно только тогда, когда данные, введённые пользователем корректны
                 }
             }            
         }
-
-        private void Button_Click_Test1(object sender, System.Windows.RoutedEventArgs e)
-        {
-            //ErrorTextBlock_forIncorrectIngectRadius.Visibility = System.Windows.Visibility.Visible;
-        }
     }
 }
+
+
+
+
+
+
+
+
+
