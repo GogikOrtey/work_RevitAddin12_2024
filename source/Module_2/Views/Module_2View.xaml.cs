@@ -39,8 +39,8 @@ namespace Module_2.Views
         // Здесь добавляются значения в список выбора материала для стен
         void AddElementForComboBoxSelectWallMaterial()
         {
-            viewModel_pub.AddWallTypeName("1 Задаю значение в коде View через AddWallTypeName");
-            viewModel_pub.WallTypeNames.Add("2 Задаю значение в коде View через метод .Add");
+            //viewModel_pub.AddWallTypeName("1 Задаю значение в коде View через AddWallTypeName");
+            viewModel_pub.WallTypeNames.Add("#2");
 
             //viewModel.WallTypeNames = new List<string>();
 
@@ -53,6 +53,7 @@ namespace Module_2.Views
             // Перебираю все элементы из списка общего WallTypeNames, и добавляю их в поле с выбором на форме
             foreach (var item in viewModel_pub.WallTypeNames)
             {
+                //ComboBoxForSelectWallMaterial.Items.Clear();
                 ComboBoxForSelectWallMaterial.Items.Add(item);
             }
 
@@ -176,6 +177,17 @@ namespace Module_2.Views
                     this.Close();   // Закрываем это окно только тогда, когда данные, введённые пользователем корректны
                 }
             }            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel_pub.WallTypeNames.Add("8 + Новый элемент");
+
+            foreach (var item in viewModel_pub.WallTypeNames)
+            {
+                //ComboBoxForSelectWallMaterial.Items.Clear();
+                ComboBoxForSelectWallMaterial.Items.Add(item);
+            }
         }
     }
 }

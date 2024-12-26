@@ -26,5 +26,6 @@
         <Button Content="Отменить" HorizontalAlignment="Left" Margin="40,0,0,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_CloseThisWindow" Background="#FFFF5413" VerticalContentAlignment="Center"/>
         <TextBlock Visibility="Collapsed" x:Name="ErrorTextBlock_forIncorrectIngectRadius" HorizontalAlignment="Center" Height="23" Margin="0,141,0,0" VerticalAlignment="Top" Width="399" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap" FontStyle="Italic" Foreground="Red" TextAlignment="Center"><Run Language="ru-ru" Text="Радиус введён некорректно!"/></TextBlock>
         <Label Content="метров" HorizontalAlignment="Left" Height="33" Margin="317,96,0,0" VerticalAlignment="Top" Width="57" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True" VerticalContentAlignment="Bottom"/>
+        <Button Content="Test Button 2" HorizontalAlignment="Center" Margin="0,270,0,0" VerticalAlignment="Top" Width="154" Click="Button_Click"/>
     </Grid>
 </Window>

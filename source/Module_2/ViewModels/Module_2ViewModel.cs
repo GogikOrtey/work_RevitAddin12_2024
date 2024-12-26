@@ -57,9 +57,10 @@ namespace Module_2.ViewModels
         }
 
         // Создаю новый список, при инициализации
-        public Module_2ViewModel()
+        public Module_2ViewModel(List<string> inputString)
         {
-            WallTypeNames = new List<string>();
+            //WallTypeNames = new List<string>();
+            WallTypeNames = inputString;
         }
 
         // Отдельный метод для добавления значений в список
