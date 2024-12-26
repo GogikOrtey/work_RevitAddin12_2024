@@ -7,6 +7,14 @@ namespace Module_2.Views
 {
     public sealed partial class Module_2View
     {
+        // Корректно ли закрылось окно по созданию стены?
+        // Это метод установки значения для ViewModel, которое можно дальше будет использоватьв Model
+        private void SetValueFor_IsWindowCorrectCloset(bool val)
+        {
+            var viewModel = (Module_2ViewModel)DataContext;
+            viewModel.IsWindowClosetCorrect = val; 
+        }
+
         public static int ExRadius = 0;
 
         public Module_2View(Module_2ViewModel viewModel)
@@ -14,6 +22,8 @@ namespace Module_2.Views
             DataContext = viewModel;
             InitializeComponent();
             TB_inputRadius.Text = "5"; // Устанавливаю начальное значение для поля ввода радиуса
+
+            SetValueFor_IsWindowCorrectCloset(true); // Тестово устанавливаю значение false, для общей переменной
         }
 
         private void Button_Click_CloseThisWindow(object sender, System.Windows.RoutedEventArgs e)

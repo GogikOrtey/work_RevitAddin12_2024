@@ -8,5 +8,13 @@
             get => _inputRadius;
             set => SetProperty(ref _inputRadius, value);
         }
+
+        private bool _isWindowClosetCorrect;
+        public bool IsWindowClosetCorrect
+        {
+            get => _isWindowClosetCorrect;
+            set => SetProperty(ref _isWindowClosetCorrect, value);
+        }
+
     }
 }

@@ -32,7 +32,7 @@ namespace Application.Commands
             var view = new Module_2View(viewModel);
             view.ShowDialog();
 
-            TaskDialog.Show("Info", "_2__inputRadius = " + viewModel.InputRadius);
+            TaskDialog.Show("Info", "Окно завершено корректно, радиус = " + viewModel.InputRadius + ", viewModel.IsWindowClosetCorrect = " + viewModel.IsWindowClosetCorrect);
 
 
             //int InpRadius = Module_2View.ExRadius;
