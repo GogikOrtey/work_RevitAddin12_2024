@@ -1,12 +1,24 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using Autodesk.Revit.UI;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Module_2.ViewModels;
 
 namespace Module_2.Views
 {
     public sealed partial class Module_2View
     {
+        // Главный метод инициализации окна:
+        public Module_2View(Module_2ViewModel viewModel)
+        {
+            DataContext = viewModel;
+            InitializeComponent();
+            TB_inputRadius.Text = "5";                  // Устанавливаю начальное значение для поля ввода радиуса
+            AddElementForComboBoxSelectWallMaterial();  // Добавляю значения в список выбора материала для стен
+
+            SetValueFor_IsWindowCorrectCloset(false);   // По умолчанию устанавливаю false, и устанавливаю true только при корректном закрытии
+        }
+
         // Корректно ли закрылось окно по созданию стены?
         // Это метод установки значения для ViewModel, которое можно дальше будет использоватьв Model
         private void SetValueFor_IsWindowCorrectCloset(bool val)
@@ -17,22 +29,25 @@ namespace Module_2.Views
 
         public static int ExRadius = 0;
 
-        public Module_2View(Module_2ViewModel viewModel)
-        {
-            DataContext = viewModel;
-            InitializeComponent();
-            TB_inputRadius.Text = "5";                  // Устанавливаю начальное значение для поля ввода радиуса
-            AddElementForComboBoxSelectWallMaterial();  // Добавляю значения в список выбора материала для стен
-
-            SetValueFor_IsWindowCorrectCloset(false); // По умолчанию устанавливаю false, и устанавливаю true только при корректном закрытии
-        }
-
         // Здесь добавляются значения в список выбора материала для стен
         void AddElementForComboBoxSelectWallMaterial()
         {
+            var viewModel = (Module_2ViewModel)DataContext;
+
+            viewModel.WallTypeNames.Add("444");
+            viewModel.WallTypeNames.Add("555");
+
+            string message = string.Join(", ", viewModel.WallTypeNames);
+            TaskDialog.Show("Wall Type Names: ", "_" + message + "_");
+
+            //foreach (var item in viewModel.WallTypeNames)
+            //{
+            //    ComboBoxForSelectWallMaterial.Items.Add(item);
+            //}
+
             ComboBoxForSelectWallMaterial.Items.Add("1");
-            ComboBoxForSelectWallMaterial.Items.Add("2");
-            ComboBoxForSelectWallMaterial.Items.Add("3");
+            //ComboBoxForSelectWallMaterial.Items.Add("2");
+            //ComboBoxForSelectWallMaterial.Items.Add("3");
         }
 
         // Красная кнопка снизу "Отменить"

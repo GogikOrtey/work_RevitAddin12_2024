@@ -18,6 +18,8 @@ namespace Application.Commands
     // Этот модуль создаёт окружную стену, в точке нажатия пользователем
     public class StartupCommand_2 : IExternalCommand
     {
+        List<string> wallTypeNames = new List<string>();
+
         // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -28,9 +30,16 @@ namespace Application.Commands
             // Выбор точки на поверхности
             XYZ point = uidoc.Selection.PickPoint("Выберите точку на поверхности");
 
-            // Открываю визуальное окно
+            // Инициализирую окно
             var viewModel = new Module_2ViewModel();
             var view = new Module_2View(viewModel);
+
+            // Добавляю в список все типы стен
+            //GetAllWallTypes(doc);
+            viewModel.WallTypeNames.Add("111");
+            viewModel.WallTypeNames.Add("222");
+
+            // Показываю окно
             view.ShowDialog();
 
             TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect);
@@ -104,6 +113,23 @@ namespace Application.Commands
             inputVal = Math.Round(inputVal, 2);
 
             return (inputVal);
+        }
+
+        void GetAllWallTypes(Document doc)
+        {
+            // Получение всех типов стен в документе
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ICollection<Element> wallTypes = collector.OfClass(typeof(WallType)).ToElements();            
+
+            foreach (Element wallTypeElem in wallTypes)
+            {
+                WallType wallType = wallTypeElem as WallType;
+                if (wallType != null)
+                {
+                    // Он их просто добавляет в список
+                    wallTypeNames.Add(wallType.Name);
+                }
+            }
         }
     }
 }
