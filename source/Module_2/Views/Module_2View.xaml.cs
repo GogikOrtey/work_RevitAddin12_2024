@@ -13,8 +13,7 @@ namespace Module_2.Views
         {
             DataContext = viewModel;
             InitializeComponent();
-
-
+            TB_inputRadius.Text = "5"; // Устанавливаю начальное значение для поля ввода радиуса
         }
 
         private void Button_Click_CloseThisWindow(object sender, System.Windows.RoutedEventArgs e)
@@ -23,9 +22,55 @@ namespace Module_2.Views
             this.Close();
         }
 
+        // Метод, который вызывается при каждом изменении значений поля, пользователем
+        private void TB_inputRadius_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckIsValidValueFronInput();
+        }
+
+        // Метод проверяет корректность значения в поле ввода радиуса
+        // И если значение некорректно, то показывает красный текст, а если верное - то скрывает
+        private bool CheckIsValidValueFronInput()
+        {
+            string inputRadius = TB_inputRadius.Text;
+            double radius;
+            bool isNumber = double.TryParse(inputRadius, out radius);
+
+            //MessageBox.Show("Значение TB_inputRadius.Text = _" + inputRadius + "_", "Info", MessageBoxButton.OK);
+
+            if (inputRadius == "")
+            {
+                // Если значение пусто, то не вывожу текст с ошибкой
+                ErrorTextBlock_forIncorrectIngectRadius.Visibility = System.Windows.Visibility.Collapsed;
+                return true; 
+            }
+
+            if (!isNumber)
+            {
+                // Значение не является числом, установите переменную в false
+                // Дополнительно, вы можете уведомить пользователя, что введено некорректное значение
+                //MessageBox.Show("Введите числовое значение для радиуса.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ErrorTextBlock_forIncorrectIngectRadius.Visibility = System.Windows.Visibility.Visible;
+
+                return false;
+            }
+            else
+            {
+                // Если значение является числом
+                ErrorTextBlock_forIncorrectIngectRadius.Visibility = System.Windows.Visibility.Collapsed;
+                return true;
+            }
+        }
+
+
         // Кнопка подтверждения генерации стен
         private void Button_Click_AcceptGenerateWall(object sender, System.Windows.RoutedEventArgs e)
         {
+
+            //
+            //  Проверка корректности поля радиуса:
+            //
+
             string inputRadius = TB_inputRadius.Text;
             double radius;
             bool isNumber = double.TryParse(inputRadius, out radius);
@@ -39,7 +84,10 @@ namespace Module_2.Views
             }
             else
             {
-                // Значение является числом, можете использовать переменную radius
+                // Если значение является числом
+
+                ErrorTextBlock_forIncorrectIngectRadius.Visibility = System.Windows.Visibility.Collapsed;
+
                 //TaskDialog.Show("Info", "Значение корректно, и = " + radius);
 
                 if (radius <= 0)
@@ -56,10 +104,10 @@ namespace Module_2.Views
                 {
                     // Радиус корректен
                     TaskDialog.Show("Info", "Радиус корректен: " + radius);
+                    
+                    this.Close();   // Закрываем это окно только тогда, когда данные, введённые пользователем корректны
                 }
-            }
-
-            this.Close();
+            }            
         }
 
         private void Button_Click_Test1(object sender, System.Windows.RoutedEventArgs e)
