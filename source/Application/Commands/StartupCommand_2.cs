@@ -133,50 +133,43 @@ namespace Application.Commands
 
                 Wall wall1, wall2;
 
-                // Создание объекта на основе окружности
-                using (Transaction transaction = new Transaction(doc, "Создание окружной стены"))
+                // Находим тип стены "Витраж 1" из семейства "Curtain Wall"
+                WallType curtainWallType = new FilteredElementCollector(doc)
+                                           .OfClass(typeof(WallType))
+                                           .Cast<WallType>()
+                                           .FirstOrDefault(wt => wt.FamilyName == "Curtain Wall" && wt.Name == "Витраж 1");
+
+                if (curtainWallType != null)
                 {
-                    transaction.Start();
-
-                    // Создаю стены
-                    wall1 = Wall.Create(doc, arc1, level1.Id, false);
-                    wall2 = Wall.Create(doc, arc2, level1.Id, false);
-
-                    // Находим материал "Витраж 1"
-                    Material glassMaterial = new FilteredElementCollector(doc)
-                                             .OfClass(typeof(Material))
-                                             .FirstOrDefault(m => m.Name == "Витраж 1") as Material;
-
-                    if (glassMaterial != null)
+                    using (Transaction transaction = new Transaction(doc, "Создание окружной стены"))
                     {
-                        // Получаем параметр MaterialId
-                        ElementId glassMaterialId = glassMaterial.Id;
+                        transaction.Start();
 
-                        // Задаем материал стены до завершения транзакции
-                        //wall1.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(glassMaterialId);
-                        //wall2.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(glassMaterialId);
+                        // Создаю стены
+                        wall1 = Wall.Create(doc, arc1, level1.Id, false);
+                        wall2 = Wall.Create(doc, arc2, level1.Id, false);
 
-                        wall1.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(1948);
+                        // Задаем тип стены до завершения транзакции
+                        wall1.ChangeTypeId(curtainWallType.Id);
 
-                        //wall1.WallType.get_Parameter()
+                        transaction.Commit();
                     }
 
-                    transaction.Commit();
-
-                    // Применяю к созданным стенам выбранный материал
-                    ChangeWallMaterialFrom(wall1, viewModel.SelectedWallMaterial);
-                    ChangeWallMaterialFrom(wall2, viewModel.SelectedWallMaterial);
-
                     // Вывод сообщения о создании окружной стены
-                    //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
+                    OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана с типом 'Витраж 1'!");
                 }
+                else
+                {
+                    OthersMyVoid.ShowInfoWindow("Тип стены 'Витраж 1' не найден.");
+                }
+
             }
 
             return Result.Succeeded;
         }
 
 
-        // Процедура для изменения типа стены (в данном случае - Арки)
+        // Процедура для изменения типа стены 
         void ChangeWallMaterialFrom(Wall inpWall, string nameNewWallMaterial)
         {
             Document doc = doc_pub;
