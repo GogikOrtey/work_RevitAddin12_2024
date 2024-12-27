@@ -20,12 +20,15 @@ namespace Application.Commands
     {
         //List<string> wallTypeNames = new List<string>();
 
+        Document doc_pub; // Для простого доступа в других процедурах
+
         // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             UIApplication uiApp = commandData.Application;
             UIDocument uidoc = commandData.Application.ActiveUIDocument;
             Document doc = uidoc.Document;
+            doc_pub = doc;
 
             // Выбор точки на поверхности
             XYZ point = uidoc.Selection.PickPoint("Выберите точку на поверхности");
@@ -133,8 +136,13 @@ namespace Application.Commands
                 {
                     transaction.Start();
 
+                    // Создаю стены
                     Wall.Create(doc, arc1, level1.Id, false);
                     Wall.Create(doc, arc2, level1.Id, false);
+
+                    // Применяю к ним выбранный материал
+                    ChangeWallMaterial_Arc(arc1, viewModel.SelectedWallMaterial);
+                    ChangeWallMaterial_Arc(arc2, viewModel.SelectedWallMaterial);
 
                     transaction.Commit();
                 }
@@ -144,6 +152,50 @@ namespace Application.Commands
             }
 
             return Result.Succeeded;
+        }
+
+
+        // Процедура для изменения типа стены (в данном случае - Арки)
+        void ChangeWallMaterial_Arc(Arc InpWall, string NameNewWallMaterial)
+        {
+            // Определите ID материалов, которые вы хотите использовать
+            ElementId materialId = GetMaterialIdByName(doc_pub, NameNewWallMaterial);
+
+            // Функция для получения ID материала по его имени
+            ElementId GetMaterialIdByName(Document doc, string materialName)
+            {
+                Material material = new FilteredElementCollector(doc)
+                    .OfClass(typeof(Material))
+                    .Cast<Material>()
+                    .FirstOrDefault(m => m.Name.Equals(materialName));
+
+                return material?.Id;
+            }
+
+            // Изменение материала стен
+            void SetWallMaterial(Arc wall, ElementId materialId)
+            {
+                // Получаем тип стены
+                WallType wallType = wall.WallType;
+
+                // Начинаем транзакцию
+                using (Transaction transaction = new Transaction(doc_pub, "Изменение материала стены"))
+                {
+                    transaction.Start();
+
+                    // Установка материала через параметр
+                    Parameter materialParam = wallType.LookupParameter("Structural Material");
+                    if (materialParam != null && !materialParam.IsReadOnly)
+                    {
+                        materialParam.Set(materialId);
+                    }
+
+                    transaction.Commit();
+                }
+            }
+
+            // Применение изменения материала к вашим стенам
+            SetWallMaterial(InpWall, materialId);
         }
 
         // Переводит числовое значение из метров в футы

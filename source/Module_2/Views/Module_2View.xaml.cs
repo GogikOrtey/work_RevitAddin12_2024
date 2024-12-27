@@ -27,7 +27,7 @@ namespace Module_2.Views
         
 
         // Корректно ли закрылось окно по созданию стены?
-        // Это метод установки значения для ViewModel, которое можно дальше будет использоватьв Model
+        // Это метод установки значения для ViewModel, которое можно дальше будет использовать в Model
         private void SetValueFor_IsWindowCorrectCloset(bool val)
         {
             viewModel_pub.IsWindowClosetCorrect = val; 
@@ -38,6 +38,18 @@ namespace Module_2.Views
         // Здесь добавляются значения в список выбора материала для стен
         void AddElementForComboBoxSelectWallMaterial()
         {
+            // Проверяю, не пуст ли список на получение всех типов стен:
+
+            // Если у нас в проекте отсутствуют доступные стены, или код получения доступных стен отработал некорректно
+            // то показываем ошибку, и вызываем исключение
+            if (viewModel_pub.WallTypeNames.Count == 0)
+            {
+                MessageBox.Show("К сожалению, возникла ошибка получения данных о доступных стенах.\n\nПродолжение работы плагина невозможно", 
+                    "Ошибка получения данных о доступных стенах", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                throw new ApplicationException("Произошла программная ошибка получения данных о доступных стенах. Операция прервана");
+            }
+
             //ComboBoxForSelectWallMaterial.Items.Clear(); // Очищает весь список
 
             // Перебираю все элементы из списка общего WallTypeNames, и добавляю их в поле с выбором на форме
@@ -45,6 +57,9 @@ namespace Module_2.Views
             {                
                 ComboBoxForSelectWallMaterial.Items.Add(item);
             }
+
+            // Выбираю самый первый вариант в выпадающем списке:
+            ComboBoxForSelectWallMaterial.SelectedIndex = 0;
         }
 
         // Красная кнопка снизу "Отменить"
