@@ -33,33 +33,8 @@ namespace Module_2.ViewModels
             set => SetProperty(ref _selectedWallMaterial, value);
         }
 
-
-
-
-
-        //[ObservableProperty]
-        //private string? selectedWallTypeName;
-
-
-
-        //[ObservableProperty]
-        //private List<string>? wallTypeNames;
-
-        //public Module_2ViewModel()
-        //{
-        //    WallTypeNames = null;
-        //}
-
-        //[ObservableProperty]
-        //private string? wTN_2;
-
-
-
-
-
-
         //
-        // Список, который можно изменять из Model:
+        // Список для хранения всех доступных материалов стен:
         //
 
         private List<string> _wallTypeNames;

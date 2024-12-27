@@ -56,14 +56,11 @@ namespace Application.Commands
             // Если окно ввода информации для создания стены закрыто корректно
             if (viewModel.IsWindowClosetCorrect)
             {
-                //int InpRadius = Module_2View.ExRadius;
-                //double radius = 5.0; // Радиус окружности
-
                 // В переменной viewModel.InputRadius хранится радиус, который ввёл пользователь в окне
                 // Его корректность уже проверена во View
 
                 double radius;
-                double.TryParse(viewModel.InputRadius, out radius);
+                double.TryParse(viewModel.InputRadius, out radius); // Берём его сюда, и записываем в переменную radius
 
                 // Перевод из метров во внутренние единицы (футы)
                 radius = ConvertMetersToFoot(radius);
