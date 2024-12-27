@@ -18,7 +18,7 @@ namespace Application.Commands
     // Этот модуль создаёт окружную стену, в точке нажатия пользователем
     public class StartupCommand_2 : IExternalCommand
     {
-        List<string> wallTypeNames = new List<string>();
+        //List<string> wallTypeNames = new List<string>();
 
         // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
@@ -32,19 +32,24 @@ namespace Application.Commands
 
             List<string> WallTypeNames = new List<string>();
 
-            WallTypeNames.Add("Element 1");
+            // Получаю все доступные в документе материалы стен
+            // И загружаю их в список WallTypeNames
+            WallTypeNames = GetAllWallTypes(doc);
+
+            //WallTypeNames.Add("Element 1");
 
             // Инициализируем окно и ViewModel
-            var viewModel = new Module_2ViewModel(WallTypeNames);
-            var view = new Module_2View(viewModel);
 
-            //// Показываем окно и вносим изменения в ViewModel после инициализации окна
-            //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
-            //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
+            // Передаю в конструктор Module_2ViewModel этот список, что бы дальше его использовать в View
+            var viewModel = new Module_2ViewModel(WallTypeNames); 
+            var view = new Module_2View(viewModel);
 
             // Показываем окно
             view.ShowDialog();
 
+            //// Показываем окно и вносим изменения в ViewModel после инициализации окна
+            //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
+            //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
 
             //// Инициализирую окно
             //var viewModel = new Module_2ViewModel();
@@ -140,8 +145,10 @@ namespace Application.Commands
             return (inputVal);
         }
 
-        void GetAllWallTypes(Document doc)
+        List<string> GetAllWallTypes(Document doc)
         {
+            List<string> wallTypeNames_ins = new List<string>();
+
             // Получение всех типов стен в документе
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             ICollection<Element> wallTypes = collector.OfClass(typeof(WallType)).ToElements();            
@@ -152,9 +159,11 @@ namespace Application.Commands
                 if (wallType != null)
                 {
                     // Он их просто добавляет в список
-                    wallTypeNames.Add(wallType.Name);
+                    wallTypeNames_ins.Add(wallType.Name);
                 }
             }
+
+            return wallTypeNames_ins;
         }
     }
 }

@@ -35,16 +35,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="2.*"/>
-        <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*"/>
-        <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*"/>
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*"/>
-        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*"/>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*"/>
+        <PackageReference Include="Microsoft.VisualStudio.Utilities" Version="17.12.40391" />
+        <PackageReference Include="Nice3point.Revit.Build.Tasks" Version="2.*" />
+        <PackageReference Include="Nice3point.Revit.Toolkit" Version="$(RevitVersion).*" />
+        <PackageReference Include="Nice3point.Revit.Extensions" Version="$(RevitVersion).*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPI" Version="$(RevitVersion).*" />
+        <PackageReference Include="Nice3point.Revit.Api.RevitAPIUI" Version="$(RevitVersion).*" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Models"/>
+        <Folder Include="Models" />
     </ItemGroup>
 
 </Project>
