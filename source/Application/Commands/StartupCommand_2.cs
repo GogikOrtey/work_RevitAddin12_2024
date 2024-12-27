@@ -18,9 +18,7 @@ namespace Application.Commands
     // Этот модуль создаёт окружную стену, в точке нажатия пользователем
     public class StartupCommand_2 : IExternalCommand
     {
-        //List<string> wallTypeNames = new List<string>();
-
-        Document doc_pub; // Для простого доступа в других процедурах
+        private Document doc_pub; // Для простого доступа в других процедурах этого класса
 
         // Код, который выполняется по нажатию кнопки №2
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
@@ -39,8 +37,6 @@ namespace Application.Commands
             // И загружаю их в список WallTypeNames
             WallTypeNames = GetAllWallTypes(doc);
 
-            //WallTypeNames.Add("Element 1");
-
             // Инициализируем окно и ViewModel
 
             // Передаю в конструктор Module_2ViewModel этот список, что бы дальше его использовать в View
@@ -50,50 +46,21 @@ namespace Application.Commands
             // Показываем окно
             view.ShowDialog();
 
-            // Старый код, потом удалить:
-            {
-                //// Показываем окно и вносим изменения в ViewModel после инициализации окна
-                //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
-                //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
-
-                //// Инициализирую окно
-                //var viewModel = new Module_2ViewModel();
-                //var view = new Module_2View(viewModel);
-
-                //// Добавляю в список все типы стен
-                ////GetAllWallTypes(doc);
-                ////viewModel.WallTypeNames.Add("111");
-                ////viewModel.WallTypeNames.Add("222");
-
-                ////viewModel.AddWallTypeName("789");
-                ////viewModel.WallTypeNames = new List<string> { "333", "444" };
-
-                //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
-                //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
-
-                //// Показываю окно
-                //view.ShowDialog();
-
-                //viewModel.AddWallTypeName("5 Задаю значение в коде Model через AddWallTypeName");
-                //viewModel.WallTypeNames.Add("6 Задаю значение в коде Model через метод .Add");
-            }
-
             //
             // Дальнейший код будет выполнятся, когда окно закроется:
-            //
+            //            
 
-            
-
-            TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect + 
-                "\nВыбранный материал стены = " + viewModel.SelectedWallMaterial);
+            //TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect + 
+            //    "\nВыбранный материал стены = " + viewModel.SelectedWallMaterial);
 
             // Если окно ввода информации для создания стены закрыто корректно
             if (viewModel.IsWindowClosetCorrect)
             {
-                int InpRadius = Module_2View.ExRadius;
-
-                //TaskDialog.Show("Info", "_1_InpRadius = " + InpRadius);
+                //int InpRadius = Module_2View.ExRadius;
                 //double radius = 5.0; // Радиус окружности
+
+                // В переменной viewModel.InputRadius хранится радиус, который ввёл пользователь в окне
+                // Его корректность уже проверена во View
 
                 double radius;
                 double.TryParse(viewModel.InputRadius, out radius);
@@ -120,7 +87,7 @@ namespace Application.Commands
                     .Cast<Level>()
                     .FirstOrDefault(level => level.Name.Equals("Уровень 1"));
 
-                // "Уровень" - это понятие из Revit, которе можно обозначить как "Этаж", на котором мы работаем, и создаём объекты
+                // "Уровень" - это понятие из Revit, которе можно обозначить как "Этаж", на котором мы работаем и создаём объекты
 
                 if (level1 == null)
                 {
@@ -131,13 +98,18 @@ namespace Application.Commands
                     // Он просто покажет встроенноное окно с ошибкой, и программа не закроется, что удобно
                 }
 
+                // Создаю пустые экземпляры стен, для более удобного их дальнейшего использования
                 Wall wall1, wall2;
 
-                // Находим тип стены "Витраж 1" из семейства "Curtain Wall"
+                // Мы получаем значение выбранного пользователем типа для стены, из переменной viewModel.SelectedWallMaterial
+
+                // Находим заданный тип стены, и создаём экземпляр WallType для назначения его новым созданным стенам далее
                 WallType curtainWallType = new FilteredElementCollector(doc)
                                            .OfClass(typeof(WallType))
                                            .Cast<WallType>()
-                                           .FirstOrDefault(wt => wt.FamilyName == "Curtain Wall" && wt.Name == "Витраж 1");
+                                           .FirstOrDefault(wt => wt.Name == viewModel.SelectedWallMaterial);
+
+                // Корректность значения viewModel.SelectedWallMaterial уже проверена во View
 
                 if (curtainWallType != null)
                 {
@@ -148,70 +120,26 @@ namespace Application.Commands
                         // Создаю стены
                         wall1 = Wall.Create(doc, arc1, level1.Id, false);
                         wall2 = Wall.Create(doc, arc2, level1.Id, false);
+                        // Здесь важно отметить, что я создаю стены - новый объект типа Wall, используй заданную ранее Arc (кривую), как путь для стены
 
-                        // Задаем тип стены до завершения транзакции
+                        // Задаем тип для создаваемой стены 
                         wall1.ChangeTypeId(curtainWallType.Id);
+                        wall2.ChangeTypeId(curtainWallType.Id);
 
                         transaction.Commit();
                     }
 
-                    // Вывод сообщения о создании окружной стены
-                    OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана с типом 'Витраж 1'!");
+                    //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана с типом: " + viewModel.SelectedWallMaterial);
                 }
                 else
                 {
-                    OthersMyVoid.ShowInfoWindow("Тип стены 'Витраж 1' не найден.");
+                    //OthersMyVoid.ShowInfoWindow("Тип стены 'Витраж 1' не найден.");
+                    MessageBox.Show($"Тип стены {viewModel.SelectedWallMaterial} не найден.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-
             }
 
             return Result.Succeeded;
         }
-
-
-        // Процедура для изменения типа стены 
-        void ChangeWallMaterialFrom(Wall inpWall, string nameNewWallMaterial)
-        {
-            Document doc = doc_pub;
-            ElementId materialId = GetMaterialIdByName(doc, nameNewWallMaterial);
-
-            // Функция для получения ID материала по его имени
-            ElementId GetMaterialIdByName(Document doc, string materialName)
-            {
-                Material material = new FilteredElementCollector(doc)
-                    .OfClass(typeof(Material))
-                    .Cast<Material>()
-                    .FirstOrDefault(m => m.Name.Equals(materialName));
-                return material?.Id;
-            }
-
-            // Изменение материала стен
-            void SetWallMaterial(Wall wall, ElementId materialId)
-            {
-                // Получаем тип стены
-                WallType wallType = wall.WallType;
-
-                // Начинаем транзакцию
-                using (Transaction transaction = new Transaction(doc, "Изменение материала стены"))
-                {
-                    transaction.Start();
-
-                    // Установка материала через параметр
-                    Parameter materialParam = wallType.LookupParameter("Material");
-                    if (materialParam != null && !materialParam.IsReadOnly)
-                    {
-                        materialParam.Set(materialId);
-                    }
-
-                    transaction.Commit();
-                }
-            }
-
-            // Применение изменения материала к вашей новой стене
-            SetWallMaterial(inpWall, materialId);
-        }
-
-
 
 
         // Переводит числовое значение из метров в футы
@@ -223,6 +151,8 @@ namespace Application.Commands
             return (inputVal);
         }
 
+        // Эта процедура находит все типы стен, которые есть в документе, и записывает их в список wallTypeNames_ins
+        // Затем он передаётся в конструктор ViewModel, где далее используется во View - выводится как значения списка с выбором в окне
         List<string> GetAllWallTypes(Document doc)
         {
             List<string> wallTypeNames_ins = new List<string>();
