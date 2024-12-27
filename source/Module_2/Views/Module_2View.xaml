@@ -13,19 +13,22 @@
     Height="400"
     Width="400">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="39*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <TextBlock
             Text="В выбранной точке будет создана окружная стена"
             FontSize="15"
-            VerticalAlignment="Top"
-            HorizontalAlignment="Stretch" Margin="0,15,0,0" TextAlignment="Center" />
+            VerticalAlignment="Top" Margin="0,15,0,0" TextAlignment="Center" Grid.ColumnSpan="2" />
         <Label Content="Введите радиус:" HorizontalAlignment="Left" Height="33" Margin="79,96,0,0" VerticalAlignment="Top" Width="137" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True"/>
-        <TextBox x:Name="TB_inputRadius" HorizontalAlignment="Left" Margin="232,96,0,0" TextWrapping="Wrap" Text="{Binding InputRadius, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="80" Height="33" FontSize="14" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="TB_inputRadius_TextChanged"/>
+        <TextBox x:Name="TB_inputRadius" HorizontalAlignment="Left" Margin="236,96,0,0" TextWrapping="Wrap" Text="{Binding InputRadius, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="80" Height="33" FontSize="14" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="TB_inputRadius_TextChanged"/>
         <TextBlock Text="Выберете материал стены:" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" VerticalAlignment="Top" Width="237" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap"/>
-        <ComboBox x:Name="ComboBoxForSelectWallMaterial" HorizontalAlignment="Left" Margin="79,198,0,0" VerticalAlignment="Top" Width="237" Height="41"/>
-        <Button Content="Создать стену" HorizontalAlignment="Right" Margin="0,0,40,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_AcceptGenerateWall" Background="#FF2BE41C"/>
+        <ComboBox x:Name="ComboBoxForSelectWallMaterial" HorizontalAlignment="Left" Margin="79,198,0,0" VerticalAlignment="Top" Width="237" Height="41" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" SelectionChanged="ComboBoxForSelectWallMaterial_SelectionChanged"/>
+        <Button Content="Создать стену" HorizontalAlignment="Right" Margin="0,0,30,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_AcceptGenerateWall" Background="#FF2BE41C"/>
         <Button Content="Отменить" HorizontalAlignment="Left" Margin="40,0,0,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_CloseThisWindow" Background="#FFFF5413" VerticalContentAlignment="Center"/>
-        <TextBlock Visibility="Collapsed" x:Name="ErrorTextBlock_forIncorrectIngectRadius" HorizontalAlignment="Center" Height="23" Margin="0,141,0,0" VerticalAlignment="Top" Width="399" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap" FontStyle="Italic" Foreground="Red" TextAlignment="Center"><Run Language="ru-ru" Text="Радиус введён некорректно!"/></TextBlock>
-        <Label Content="метров" HorizontalAlignment="Left" Height="33" Margin="317,96,0,0" VerticalAlignment="Top" Width="57" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True" VerticalContentAlignment="Bottom"/>
-        <Button Content="Test Button 2" HorizontalAlignment="Center" Margin="0,270,0,0" VerticalAlignment="Top" Width="154" Click="Button_Click"/>
+        <TextBlock Visibility="Collapsed" 
+                   x:Name="ErrorTextBlock_forIncorrectIngectRadius" HorizontalAlignment="Left" Height="23" Margin="0,141,0,0" VerticalAlignment="Top" Width="399" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap" FontStyle="Italic" Foreground="Red" TextAlignment="Center" Grid.ColumnSpan="2"><Run Language="ru-ru" Text="Радиус введён некорректно!"/></TextBlock>
+        <Label Content="метров" HorizontalAlignment="Left" Height="33" Margin="321,96,0,0" VerticalAlignment="Top" Width="57" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True" VerticalContentAlignment="Bottom"/>
     </Grid>
 </Window>

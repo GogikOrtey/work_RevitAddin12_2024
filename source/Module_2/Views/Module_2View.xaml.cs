@@ -9,7 +9,7 @@ namespace Module_2.Views
 {
     public sealed partial class Module_2View
     {
-        // Выношу переменную, для доступа к связям
+        // Выношу переменную, для более удобного доступа к ViewModel
         Module_2ViewModel viewModel_pub;
 
         // Главный метод инициализации окна:
@@ -30,8 +30,7 @@ namespace Module_2.Views
         // Это метод установки значения для ViewModel, которое можно дальше будет использоватьв Model
         private void SetValueFor_IsWindowCorrectCloset(bool val)
         {
-            var viewModel = (Module_2ViewModel)DataContext;
-            viewModel.IsWindowClosetCorrect = val; 
+            viewModel_pub.IsWindowClosetCorrect = val; 
         }
 
         public static int ExRadius = 0;
@@ -39,27 +38,13 @@ namespace Module_2.Views
         // Здесь добавляются значения в список выбора материала для стен
         void AddElementForComboBoxSelectWallMaterial()
         {
-            //viewModel_pub.AddWallTypeName("1 Задаю значение в коде View через AddWallTypeName");
-            viewModel_pub.WallTypeNames.Add("#2");
-
-            //viewModel.WallTypeNames = new List<string>();
-
-            //viewModel.WallTypeNames.Add("444");
-            //viewModel.WallTypeNames.Add("555");
-
-            //string message = string.Join(", ", viewModel.WallTypeNames);
-            //TaskDialog.Show("Wall Type Names: ", "_" + message + "_");
+            //ComboBoxForSelectWallMaterial.Items.Clear(); // Очищает весь список
 
             // Перебираю все элементы из списка общего WallTypeNames, и добавляю их в поле с выбором на форме
             foreach (var item in viewModel_pub.WallTypeNames)
-            {
-                //ComboBoxForSelectWallMaterial.Items.Clear();
+            {                
                 ComboBoxForSelectWallMaterial.Items.Add(item);
             }
-
-            //ComboBoxForSelectWallMaterial.Items.Add("1");
-            //ComboBoxForSelectWallMaterial.Items.Add("2");
-            //ComboBoxForSelectWallMaterial.Items.Add("3");
         }
 
         // Красная кнопка снизу "Отменить"
@@ -109,26 +94,6 @@ namespace Module_2.Views
             }
         }
 
-
-
-        /*
-        
-                // Получение всех типов стен в документе
-                FilteredElementCollector collector = new FilteredElementCollector(doc);
-                ICollection<Element> wallTypes = collector.OfClass(typeof(WallType)).ToElements();
-
-                List<string> wallTypeNames = new List<string>();
-
-                foreach (Element wallTypeElem in wallTypes)
-                {
-                    WallType wallType = wallTypeElem as WallType;
-                    if (wallType != null)
-                    {
-                        wallTypeNames.Add(wallType.Name);
-                    }
-                }
-
-        */
 
         // Кнопка подтверждения генерации стен
         // Зелёная кнопка снизу "Создать стену"
@@ -188,6 +153,13 @@ namespace Module_2.Views
                 //ComboBoxForSelectWallMaterial.Items.Clear();
                 ComboBoxForSelectWallMaterial.Items.Add(item);
             }
+        }
+
+        // Действие, которое вызывается, когда пользователь выбрал какой-либо новый элемент в выпадающем списке - выбора материала стены
+        private void ComboBoxForSelectWallMaterial_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Передаю в переменную SelectedWallMaterial выбранный пользователем материал стены
+            viewModel_pub.SelectedWallMaterial = ComboBoxForSelectWallMaterial.SelectedItem.ToString();
         }
     }
 }

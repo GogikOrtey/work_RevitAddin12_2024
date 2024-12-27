@@ -47,32 +47,42 @@ namespace Application.Commands
             // Показываем окно
             view.ShowDialog();
 
-            //// Показываем окно и вносим изменения в ViewModel после инициализации окна
-            //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
-            //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
+            // Старый код, потом удалить:
+            {
+                //// Показываем окно и вносим изменения в ViewModel после инициализации окна
+                //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
+                //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
 
-            //// Инициализирую окно
-            //var viewModel = new Module_2ViewModel();
-            //var view = new Module_2View(viewModel);
+                //// Инициализирую окно
+                //var viewModel = new Module_2ViewModel();
+                //var view = new Module_2View(viewModel);
 
-            //// Добавляю в список все типы стен
-            ////GetAllWallTypes(doc);
-            ////viewModel.WallTypeNames.Add("111");
-            ////viewModel.WallTypeNames.Add("222");
+                //// Добавляю в список все типы стен
+                ////GetAllWallTypes(doc);
+                ////viewModel.WallTypeNames.Add("111");
+                ////viewModel.WallTypeNames.Add("222");
 
-            ////viewModel.AddWallTypeName("789");
-            ////viewModel.WallTypeNames = new List<string> { "333", "444" };
+                ////viewModel.AddWallTypeName("789");
+                ////viewModel.WallTypeNames = new List<string> { "333", "444" };
 
-            //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
-            //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
+                //viewModel.AddWallTypeName("3 Задаю значение в коде Model через AddWallTypeName");
+                //viewModel.WallTypeNames.Add("4 Задаю значение в коде Model через метод .Add");
 
-            //// Показываю окно
-            //view.ShowDialog();
+                //// Показываю окно
+                //view.ShowDialog();
 
-            //viewModel.AddWallTypeName("5 Задаю значение в коде Model через AddWallTypeName");
-            //viewModel.WallTypeNames.Add("6 Задаю значение в коде Model через метод .Add");
+                //viewModel.AddWallTypeName("5 Задаю значение в коде Model через AddWallTypeName");
+                //viewModel.WallTypeNames.Add("6 Задаю значение в коде Model через метод .Add");
+            }
 
-            TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect);
+            //
+            // Дальнейший код будет выполнятся, когда окно закроется:
+            //
+
+            
+
+            TaskDialog.Show("Info", "Радиус = " + viewModel.InputRadius + "\nОкно закрыто корректно = " + viewModel.IsWindowClosetCorrect + 
+                "\nВыбранный материал стены = " + viewModel.SelectedWallMaterial);
 
             // Если окно ввода информации для создания стены закрыто корректно
             if (viewModel.IsWindowClosetCorrect)

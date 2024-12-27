@@ -24,7 +24,23 @@ namespace Module_2.ViewModels
             set => SetProperty(ref _isWindowClosetCorrect, value);
         }
 
-        // Список, который можно изменять из Model:
+        // Значение радиуса, которое вводит пользователь
+
+        private string _selectedWallMaterial;
+        public string SelectedWallMaterial
+        {
+            get => _selectedWallMaterial;
+            set => SetProperty(ref _selectedWallMaterial, value);
+        }
+
+
+
+
+
+        //[ObservableProperty]
+        //private string? selectedWallTypeName;
+
+
 
         //[ObservableProperty]
         //private List<string>? wallTypeNames;
@@ -37,7 +53,7 @@ namespace Module_2.ViewModels
         //[ObservableProperty]
         //private string? wTN_2;
 
-        
+
 
 
 
