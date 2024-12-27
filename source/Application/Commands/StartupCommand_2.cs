@@ -141,8 +141,8 @@ namespace Application.Commands
                     Wall.Create(doc, arc2, level1.Id, false);
 
                     // Применяю к ним выбранный материал
-                    ChangeWallMaterial_Arc(arc1, viewModel.SelectedWallMaterial);
-                    ChangeWallMaterial_Arc(arc2, viewModel.SelectedWallMaterial);
+                    ChangeWallMaterialFromArc(arc1, viewModel.SelectedWallMaterial);
+                    ChangeWallMaterialFromArc(arc2, viewModel.SelectedWallMaterial);
 
                     transaction.Commit();
                 }
@@ -156,10 +156,10 @@ namespace Application.Commands
 
 
         // Процедура для изменения типа стены (в данном случае - Арки)
-        void ChangeWallMaterial_Arc(Arc InpWall, string NameNewWallMaterial)
+        void ChangeWallMaterialFromArc(Arc inpArc, string nameNewWallMaterial)
         {
-            // Определите ID материалов, которые вы хотите использовать
-            ElementId materialId = GetMaterialIdByName(doc_pub, NameNewWallMaterial);
+            Document doc = doc_pub;
+            ElementId materialId = GetMaterialIdByName(doc, nameNewWallMaterial);
 
             // Функция для получения ID материала по его имени
             ElementId GetMaterialIdByName(Document doc, string materialName)
@@ -168,20 +168,19 @@ namespace Application.Commands
                     .OfClass(typeof(Material))
                     .Cast<Material>()
                     .FirstOrDefault(m => m.Name.Equals(materialName));
-
                 return material?.Id;
             }
 
-            // Изменение материала стен
-            void SetWallMaterial(Arc wall, ElementId materialId)
+            // Создаем стену на основе дуги
+            void CreateWallFromArc(Arc arc, ElementId materialId)
             {
-                // Получаем тип стены
-                WallType wallType = wall.WallType;
-
-                // Начинаем транзакцию
-                using (Transaction transaction = new Transaction(doc_pub, "Изменение материала стены"))
+                using (Transaction transaction = new Transaction(doc, "Создание и изменение стены"))
                 {
                     transaction.Start();
+
+                    // Используем дугу непосредственно для создания стены
+                    Wall newWall = Wall.Create(doc, (IList<Curve>)arc, false);
+                    WallType wallType = newWall.WallType;
 
                     // Установка материала через параметр
                     Parameter materialParam = wallType.LookupParameter("Structural Material");
@@ -194,9 +193,12 @@ namespace Application.Commands
                 }
             }
 
-            // Применение изменения материала к вашим стенам
-            SetWallMaterial(InpWall, materialId);
+            // Применение изменения материала к вашей новой стене
+            CreateWallFromArc(inpArc, materialId);
         }
+
+
+
 
         // Переводит числовое значение из метров в футы
         public double ConvertMetersToFoot(double inputVal)
