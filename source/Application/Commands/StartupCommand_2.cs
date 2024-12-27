@@ -142,15 +142,34 @@ namespace Application.Commands
                     wall1 = Wall.Create(doc, arc1, level1.Id, false);
                     wall2 = Wall.Create(doc, arc2, level1.Id, false);
 
+                    // Находим материал "Витраж 1"
+                    Material glassMaterial = new FilteredElementCollector(doc)
+                                             .OfClass(typeof(Material))
+                                             .FirstOrDefault(m => m.Name == "Витраж 1") as Material;
+
+                    if (glassMaterial != null)
+                    {
+                        // Получаем параметр MaterialId
+                        ElementId glassMaterialId = glassMaterial.Id;
+
+                        // Задаем материал стены до завершения транзакции
+                        //wall1.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(glassMaterialId);
+                        //wall2.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(glassMaterialId);
+
+                        wall1.get_Parameter(BuiltInParameter.MATERIAL_ID_PARAM).Set(1948);
+
+                        //wall1.WallType.get_Parameter()
+                    }
+
                     transaction.Commit();
+
+                    // Применяю к созданным стенам выбранный материал
+                    ChangeWallMaterialFrom(wall1, viewModel.SelectedWallMaterial);
+                    ChangeWallMaterialFrom(wall2, viewModel.SelectedWallMaterial);
+
+                    // Вывод сообщения о создании окружной стены
+                    //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
                 }
-
-                // Применяю к созданным стенам выбранный материал
-                ChangeWallMaterialFrom(wall1, viewModel.SelectedWallMaterial);
-                ChangeWallMaterialFrom(wall2, viewModel.SelectedWallMaterial);
-
-                // Вывод сообщения о создании окружной стены
-                //OthersMyVoid.ShowInfoWindow("Окружная стена успешно создана в выбранной точке!");
             }
 
             return Result.Succeeded;
@@ -185,7 +204,7 @@ namespace Application.Commands
                     transaction.Start();
 
                     // Установка материала через параметр
-                    Parameter materialParam = wallType.LookupParameter("Structural Material");
+                    Parameter materialParam = wallType.LookupParameter("Material");
                     if (materialParam != null && !materialParam.IsReadOnly)
                     {
                         materialParam.Set(materialId);
