@@ -1,22 +1,34 @@
 ﻿<Window
     x:Class="Module_2.Views.Module_2View"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModel="clr-namespace:Module_2.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModel:Module_2ViewModel}"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     Title="Module_2"
-    Height="450"
-    Width="800">
+    Height="400"
+    Width="400">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="39*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <TextBlock
-            Text="Module_2"
-            FontSize="60"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center" />
+            Text="В выбранной точке будет создана окружная стена"
+            FontSize="15"
+            VerticalAlignment="Top" Margin="0,15,0,0" TextAlignment="Center" Grid.ColumnSpan="2" />
+        <Label Content="Введите радиус:" HorizontalAlignment="Left" Height="33" Margin="79,96,0,0" VerticalAlignment="Top" Width="137" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True"/>
+        <TextBox x:Name="TB_inputRadius" HorizontalAlignment="Left" Margin="236,96,0,0" TextWrapping="Wrap" Text="{Binding InputRadius, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="80" Height="33" FontSize="14" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextChanged="TB_inputRadius_TextChanged"/>
+        <TextBlock Text="Выберете материал стены:" HorizontalAlignment="Left" Height="23" Margin="79,169,0,0" VerticalAlignment="Top" Width="237" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap"/>
+        <ComboBox x:Name="ComboBoxForSelectWallMaterial" HorizontalAlignment="Left" Margin="79,198,0,0" VerticalAlignment="Top" Width="237" Height="41" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" SelectionChanged="ComboBoxForSelectWallMaterial_SelectionChanged"/>
+        <Button Content="Создать стену" HorizontalAlignment="Right" Margin="0,0,30,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_AcceptGenerateWall" Background="#FF2BE41C"/>
+        <Button Content="Отменить" HorizontalAlignment="Left" Margin="40,0,0,25" VerticalAlignment="Bottom" Height="32" Width="134" Click="Button_Click_CloseThisWindow" Background="#FFFF5413" VerticalContentAlignment="Center"/>
+        <TextBlock Visibility="Collapsed" 
+                   x:Name="ErrorTextBlock_forIncorrectIngectRadius" HorizontalAlignment="Left" Height="23" Margin="0,141,0,0" VerticalAlignment="Top" Width="399" FontSize="14" AllowDrop="True" UseLayoutRounding="False" TextWrapping="Wrap" FontStyle="Italic" Foreground="Red" TextAlignment="Center" Grid.ColumnSpan="2"><Run Language="ru-ru" Text="Радиус введён некорректно!"/></TextBlock>
+        <Label Content="метров" HorizontalAlignment="Left" Height="33" Margin="321,96,0,0" VerticalAlignment="Top" Width="57" BorderBrush="Black" BorderThickness="0" FontSize="14" AllowDrop="True" VerticalContentAlignment="Bottom"/>
     </Grid>
 </Window>

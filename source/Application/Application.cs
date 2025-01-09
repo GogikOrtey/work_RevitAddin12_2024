@@ -19,12 +19,12 @@ namespace Application
 
         private void CreateRibbon()
         {
-            var panel = Application.CreatePanel("Test Task 1", "Altek Orlov");
+            var panel = Application.CreatePanel("Test Task 1", "Altek Orlov"); 
 
             panel.AddPushButton<StartupCommand>("Тестовая кнопка")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_test_2.png");
 
-            panel.AddPushButton<StartupCommand_3>("Вывод информации о выбранном объекте")
+            panel.AddPushButton<StartupCommand_3>("Вывод всех доступных типов стен")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_new_1_32.png");
 
             panel.AddPushButton<StartupCommand_4>("Вывод координат нажатия мышки")
