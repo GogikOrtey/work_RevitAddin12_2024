@@ -32,6 +32,9 @@ namespace Application
 
             panel.AddPushButton<StartupCommand_2>("Генерация круга из стен")
                 .SetLargeImage("/Application;component/Resources/Icons/ico_new_3_32.png");
+
+            panel.AddPushButton<StartupCommand_5>("Вывод разного текста для R24 и R25")
+                .SetLargeImage("/Application;component/Resources/Icons/ico_new_4.png");
         }
     }
 }
